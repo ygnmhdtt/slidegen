@@ -13,6 +13,11 @@ import (
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
+const (
+	outputFile = "output.pdf"
+	delimiter  = "---"
+)
+
 func check(err interface{}) {
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +35,7 @@ func main() {
 		pdfg.AddPage(wkhtmltopdf.NewPage(html))
 	}
 	check(pdfg.Create())
-	check(pdfg.WriteFile("output.pdf"))
+	check(pdfg.WriteFile(outputFile))
 	clean()
 }
 
@@ -72,7 +77,7 @@ func splitMarkdownFiles(markdownPath string) []string {
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
-		if scanner.Text() == "---" {
+		if scanner.Text() == delimiter {
 			pages = append(pages, buffer.String())
 			buffer.Reset()
 		} else {
