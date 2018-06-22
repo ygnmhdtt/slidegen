@@ -58,16 +58,7 @@ func genHTML(markdownPathes []string) []string {
 	return files
 }
 
-// makeMarkdownFiles prepare markdown files
-// this function splits md file by '---'
-// file format like this:
-//
-// # Page 1
-// This is page 1.
-// ---
-// # Page 2
-// This is page 2.
-//
+// makeMarkdownFiles prepare markdown files splitted by '---'
 func splitMarkdownFiles(markdownPath string) []string {
 	file, err := os.Open(markdownPath)
 	check(err)
@@ -76,6 +67,7 @@ func splitMarkdownFiles(markdownPath string) []string {
 
 	var buffer bytes.Buffer
 	var pages []string
+
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
