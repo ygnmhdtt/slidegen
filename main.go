@@ -13,7 +13,7 @@ import (
 	"gopkg.in/russross/blackfriday.v2"
 )
 
-func panicOnErr(err interface{}) {
+func check(err interface{}) {
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
@@ -22,23 +22,22 @@ func panicOnErr(err interface{}) {
 
 func main() {
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
-	panicOnErr(err)
+	check(err)
 
 	mds := splitMarkdownFiles(os.Args[1])
 	for _, md := range mds {
 		html := genHTML(md)
-		pdfg.AddPage(wkhtmltopdf.NewPageReader(strings.NewReader(html)))
+		pdfg.AddPage(wkhtmltopdf.NewPage(html))
 	}
 
-	panicOnErr(pdfg.Create())
-	panicOnErr(pdfg.WriteFile("output.pdf"))
-
+	check(pdfg.Create())
+	check(pdfg.WriteFile("output.pdf"))
 }
 
 // genHTML generates html from given markdown file
 func genHTML(markdownPath string) string {
 	markdownFile, err := ioutil.ReadFile(markdownPath)
-	panicOnErr(err)
+	check(err)
 
 	//HTMLFlags and Renderer
 	htmlFlags := blackfriday.CommonHTMLFlags //UseXHTML | Smartypants | SmartypantsFractions | SmartypantsDashes | SmartypantsLatexDashes
@@ -70,7 +69,7 @@ func genHTML(markdownPath string) string {
 //
 func splitMarkdownFiles(markdownPath string) []string {
 	file, err := os.Open(markdownPath)
-	panicOnErr(err)
+	check(err)
 
 	defer file.Close()
 
@@ -88,7 +87,9 @@ func splitMarkdownFiles(markdownPath string) []string {
 	}
 
 	err = scanner.Err()
-	panicOnErr(err)
+	check(err)
+
+	// push last page to pages slice
 	pages = append(pages, buffer.String())
 	buffer.Reset()
 
