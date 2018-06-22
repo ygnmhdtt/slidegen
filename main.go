@@ -76,6 +76,7 @@ func splitMarkdownFiles(markdownPath string) []string {
 
 	scanner := bufio.NewScanner(file)
 
+	// split by delimiter
 	for scanner.Scan() {
 		if scanner.Text() == delimiter {
 			pages = append(pages, buffer.String())
