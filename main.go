@@ -50,16 +50,9 @@ func genHTML(markdownPathes []string) []string {
 		check(err)
 
 		filename := fmt.Sprintf("page%d.html", i)
-		f, err := os.Create(filename)
-		check(err)
+		html := runBlackFriday(markdownFile)
 
-		defer f.Close()
-
-		w := bufio.NewWriter(f)
-		_, err = w.WriteString(string(html))
-		check(err)
-		w.Flush()
-
+		writeFile(html, filename)
 		files = append(files, filename)
 	}
 	return files
@@ -106,20 +99,24 @@ func splitMarkdownFiles(markdownPath string) []string {
 	// save each page to files
 	for i, page := range pages {
 		filename := fmt.Sprintf("page%d.md", i)
-		f, err := os.Create(filename)
-		check(err)
-
-		defer f.Close()
-
-		w := bufio.NewWriter(f)
-		_, err = w.WriteString(page)
-		check(err)
-		w.Flush()
-
+		writeFile(page, filename)
 		files = append(files, filename)
 	}
 	return files
 }
+
+func writeFile(content string, filename string) {
+	f, err := os.Create(filename)
+	check(err)
+
+	defer f.Close()
+
+	w := bufio.NewWriter(f)
+	_, err = w.WriteString(content)
+	check(err)
+	w.Flush()
+}
+
 // runBlackFriday generates html from markdown filename
 func runBlackFriday(mdfile []byte) string {
 	htmlFlags := blackfriday.CommonHTMLFlags
