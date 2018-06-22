@@ -13,4 +13,7 @@ ENV GOPATH /go
 RUN go get -u github.com/SebastiaanKlippert/go-wkhtmltopdf
 RUN go get -u gopkg.in/russross/blackfriday.v2
 
+ENV COLUMNS 200
+ENV LINES 50
+
 WORKDIR /go/src/slidegen
