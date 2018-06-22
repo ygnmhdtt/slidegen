@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"gopkg.in/russross/blackfriday.v2"
