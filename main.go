@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
@@ -20,7 +24,7 @@ func main() {
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	panicOnErr(err)
 
-	mds := makeMarkdownFiles()
+	mds := splitMarkdownFiles(os.Args[1])
 	for _, md := range mds {
 		html := genHTML(md)
 		pdfg.AddPage(wkhtmltopdf.NewPageReader(strings.NewReader(html)))
@@ -57,12 +61,42 @@ func genHTML(markdownPath string) string {
 // makeMarkdownFiles prepare markdown files
 // this function splits md file by '---'
 // file format like this:
+//
 // # Page 1
 // This is page 1.
 // ---
 // # Page 2
 // This is page 2.
-func makeMarkdownFiles() []string {
+//
+func splitMarkdownFiles(markdownPath string) []string {
+	file, err := os.Open(markdownPath)
+	panicOnErr(err)
+
+	defer file.Close()
+
+	var buffer bytes.Buffer
+	var pages []string
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		if scanner.Text() == "---" {
+			pages = append(pages, buffer.String())
+			buffer.Reset()
+		} else {
+			buffer.WriteString(scanner.Text())
+		}
+	}
+
+	err = scanner.Err()
+	panicOnErr(err)
+	pages = append(pages, buffer.String())
+	buffer.Reset()
+
+	for i, page := range pages {
+		fmt.Println(i)
+		fmt.Println(page)
+	}
+
 	files := []string{"apple", "orange", "lemon"}
 	return files
 }
