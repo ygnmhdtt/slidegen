@@ -32,11 +32,37 @@ func main() {
 	mds := splitMarkdownFiles(os.Args[1])
 	htmls := genHTML(mds)
 	for _, html := range htmls {
+		applyGFM(html)
 		pdfg.AddPage(wkhtmltopdf.NewPage(html))
 	}
 	check(pdfg.Create())
 	check(pdfg.WriteFile(outputFile))
 	clean()
+}
+
+func applyGFM(html string) {
+	cssStartTag := `<link rel="stylesheet" href="./assets/github-markdown.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+<article class="markdown-body">`
+
+	cssEndTag := `</article>`
+	data, _ := ioutil.ReadFile(html)
+	gfmmd := fmt.Sprintf("%s\n%s\n%s", cssStartTag, data, cssEndTag)
+	writeFile(gfmmd, html)
 }
 
 // clean html and md file generated on the process
