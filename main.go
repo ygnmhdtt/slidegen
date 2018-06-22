@@ -120,9 +120,8 @@ func splitMarkdownFiles(markdownPath string) []string {
 
 		w := bufio.NewWriter(f)
 		_, err = w.WriteString(page)
-		w.Flush()
-
 		check(err)
+		w.Flush()
 
 		files = append(files, filename)
 	}
