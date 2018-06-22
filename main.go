@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
-	"gopkg.in/russross/blackfriday.v2"
+	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 func check(err interface{}) {
@@ -48,16 +48,6 @@ func genHTML(markdownPathes []string) []string {
 	for i, markdownPath := range markdownPathes {
 		markdownFile, err := ioutil.ReadFile(markdownPath)
 		check(err)
-
-		htmlFlags := blackfriday.CommonHTMLFlags
-		extFlags := blackfriday.CommonExtensions
-		params := blackfriday.HTMLRendererParameters{Flags: htmlFlags, Title: "", CSS: ""}
-		renderer := blackfriday.NewHTMLRenderer(params)
-		html := blackfriday.Run(
-			markdownFile,
-			blackfriday.WithExtensions(extFlags),
-			blackfriday.WithRenderer(renderer),
-		)
 
 		filename := fmt.Sprintf("page%d.html", i)
 		f, err := os.Create(filename)
@@ -129,4 +119,17 @@ func splitMarkdownFiles(markdownPath string) []string {
 		files = append(files, filename)
 	}
 	return files
+}
+// runBlackFriday generates html from markdown filename
+func runBlackFriday(mdfile []byte) string {
+	htmlFlags := blackfriday.CommonHTMLFlags
+	extFlags := blackfriday.CommonExtensions
+	params := blackfriday.HTMLRendererParameters{Flags: htmlFlags, Title: "", CSS: ""}
+	renderer := blackfriday.NewHTMLRenderer(params)
+	html := blackfriday.Run(
+		mdfile,
+		blackfriday.WithExtensions(extFlags),
+		blackfriday.WithRenderer(renderer),
+	)
+	return string(html)
 }
