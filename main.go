@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"gopkg.in/russross/blackfriday.v2"
@@ -83,6 +82,7 @@ func splitMarkdownFiles(markdownPath string) []string {
 			buffer.Reset()
 		} else {
 			buffer.WriteString(scanner.Text())
+			buffer.WriteString("\n")
 		}
 	}
 
@@ -93,11 +93,22 @@ func splitMarkdownFiles(markdownPath string) []string {
 	pages = append(pages, buffer.String())
 	buffer.Reset()
 
+	var files []string
+	// save each page to files
 	for i, page := range pages {
-		fmt.Println(i)
-		fmt.Println(page)
-	}
+		filename := fmt.Sprintf("page%d.md", i)
+		f, err := os.Create(filename)
+		check(err)
 
-	files := []string{"apple", "orange", "lemon"}
+		defer f.Close()
+
+		w := bufio.NewWriter(f)
+		_, err = w.WriteString(page)
+		w.Flush()
+
+		check(err)
+
+		files = append(files, filename)
+	}
 	return files
 }
