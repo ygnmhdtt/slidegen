@@ -81,8 +81,7 @@ func splitMarkdownFiles(markdownPath string) []string {
 			pages = append(pages, buffer.String())
 			buffer.Reset()
 		} else {
-			buffer.WriteString(scanner.Text())
-			buffer.WriteString("\n")
+			buffer.WriteString(fmt.Sprintf("%s\n", scanner.Text()))
 		}
 	}
 
