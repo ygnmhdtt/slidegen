@@ -31,31 +31,33 @@ func main() {
 	}
 	check(pdfg.Create())
 	check(pdfg.WriteFile("output.pdf"))
+	clean()
+}
+
+func clean() {
+	files, err := filepath.Glob("page*.*")
+	check(err)
+	for _, f := range files {
+		check(os.Remove(f))
+	}
 }
 
 // genHTML generates html from given markdown file
 func genHTML(markdownPathes []string) []string {
 	var files []string
-
 	for i, markdownPath := range markdownPathes {
 		markdownFile, err := ioutil.ReadFile(markdownPath)
 		check(err)
 
-		//HTMLFlags and Renderer
-		htmlFlags := blackfriday.CommonHTMLFlags //UseXHTML | Smartypants | SmartypantsFractions | SmartypantsDashes | SmartypantsLatexDashes
-		// htmlFlags |= blackfriday.FootnoteReturnLinks     //Generate a link at the end of a footnote to return to the source
-		// htmlFlags |= blackfriday.SmartypantsAngledQuotes //Enable angled double quotes (with Smartypants) for double quotes rendering
-		// htmlFlags |= blackfriday.SmartypantsQuotesNBSP   //Enable French guillemets 損 (with Smartypants)
-		renderer := blackfriday.NewHTMLRenderer(blackfriday.HTMLRendererParameters{Flags: htmlFlags, Title: "", CSS: ""})
-
-		//Extensions
-		extFlags := blackfriday.CommonExtensions //NoIntraEmphasis | Tables | FencedCode | Autolink | Strikethrough | SpaceHeadings | HeadingIDs | BackslashLineBreak | DefinitionLists
-		// extFlags |= blackfriday.Footnotes        //Pandoc-style footnotes
-		// extFlags |= blackfriday.HeadingIDs       //specify heading IDs  with {#id}
-		// extFlags |= blackfriday.Titleblock       //Titleblock ala pandoc
-		// extFlags |= blackfriday.DefinitionLists  //Render definition lists
-
-		html := blackfriday.Run(markdownFile, blackfriday.WithExtensions(extFlags), blackfriday.WithRenderer(renderer))
+		htmlFlags := blackfriday.CommonHTMLFlags
+		extFlags := blackfriday.CommonExtensions
+		params := blackfriday.HTMLRendererParameters{Flags: htmlFlags, Title: "", CSS: ""}
+		renderer := blackfriday.NewHTMLRenderer(params)
+		html := blackfriday.Run(
+			markdownFile,
+			blackfriday.WithExtensions(extFlags),
+			blackfriday.WithRenderer(renderer),
+		)
 
 		filename := fmt.Sprintf("page%d.html", i)
 		f, err := os.Create(filename)
