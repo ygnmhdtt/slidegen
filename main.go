@@ -34,6 +34,7 @@ func main() {
 	clean()
 }
 
+// clean html and md file generated on the process
 func clean() {
 	files, err := filepath.Glob("page*.*")
 	check(err)
@@ -97,6 +98,7 @@ func splitMarkdownFiles(markdownPath string) []string {
 	return files
 }
 
+// writeFile creates new file
 func writeFile(content string, filename string) {
 	f, err := os.Create(filename)
 	check(err)
