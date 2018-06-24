@@ -33,6 +33,7 @@ func main() {
 	htmls := genHTML(mds)
 	for _, html := range htmls {
 		applyGFM(html)
+		pdfg.Orientation.Set(wkhtmltopdf.OrientationLandscape)
 		pdfg.AddPage(wkhtmltopdf.NewPage(html))
 	}
 	check(pdfg.Create())
