@@ -34,6 +34,7 @@ func main() {
 	for _, html := range htmls {
 		applyGFM(html)
 		pdfg.Orientation.Set(wkhtmltopdf.OrientationLandscape)
+		pdfg.PageSize.Set(wkhtmltopdf.PageSizeB6)
 		pdfg.AddPage(wkhtmltopdf.NewPage(html))
 	}
 	check(pdfg.Create())
