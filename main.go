@@ -35,6 +35,7 @@ func main() {
 		applyGFM(html)
 		pdfg.Orientation.Set(wkhtmltopdf.OrientationLandscape)
 		pdfg.PageSize.Set(wkhtmltopdf.PageSizeB6)
+		pdfg.Dpi.Set(300)
 		pdfg.AddPage(wkhtmltopdf.NewPage(html))
 	}
 	check(pdfg.Create())
