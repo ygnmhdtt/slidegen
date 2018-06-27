@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 RUN apt update
-RUN apt install -y git golang wget libfontconfig1 libxrender1
+RUN apt install -y git golang wget libfontconfig1 libxrender1 language-pack-ja-base language-pack-ja
 
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz && \
   tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz && \
