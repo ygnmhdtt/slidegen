@@ -36,7 +36,11 @@ func main() {
 		pdfg.Orientation.Set(wkhtmltopdf.OrientationLandscape)
 		pdfg.PageSize.Set(wkhtmltopdf.PageSizeB6)
 		pdfg.Dpi.Set(300)
-		pdfg.AddPage(wkhtmltopdf.NewPage(html))
+		page := wkhtmltopdf.NewPage(html)
+		page.CustomHeader.Set("--encoding", "utf8")
+
+		pdfg.AddPage(page)
+		fmt.Println(pdfg.ArgString())
 	}
 	check(pdfg.Create())
 	check(pdfg.WriteFile(outputFile))
