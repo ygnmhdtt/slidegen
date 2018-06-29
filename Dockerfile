@@ -17,5 +17,6 @@ RUN go get -u gopkg.in/russross/blackfriday.v2
 
 ENV COLUMNS 200
 ENV LINES 50
+ENV LANG=ja_JP.UTF-8
 
 WORKDIR /go/src/slidegen
