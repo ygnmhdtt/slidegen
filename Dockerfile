@@ -1,5 +1,7 @@
 FROM ubuntu:18.04
 
+# todo: refactor
+
 RUN apt update
 RUN apt install -y git golang wget libfontconfig1 libxrender1 language-pack-ja-base language-pack-ja
 
