@@ -40,7 +40,6 @@ func main() {
 		page.CustomHeader.Set("--encoding", "utf8")
 
 		pdfg.AddPage(page)
-		fmt.Println(pdfg.ArgString())
 	}
 	check(pdfg.Create())
 	check(pdfg.WriteFile(outputFile))
