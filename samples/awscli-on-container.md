@@ -1,8 +1,6 @@
 I prepared `aws-tools-container` .  
 Please clone [here](https://github.com/ygnmhdtt/aws-tools-container).
 
-日本語テスト
-
 ---
 
 # Credential
