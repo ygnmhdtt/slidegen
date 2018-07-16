@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/ygnmhdtt/go-wkhtmltopdf"
@@ -46,21 +49,38 @@ func check(err interface{}) {
 
 func printHelp() {
 	help := `Usage
-slidegen your/markdown/file.md`
+slidegen your/markdown/file.md
+slidegen -g https://gist.github.com/your/gist/id`
 	fmt.Println(help)
+	os.Exit(0)
 }
 
 func main() {
-
 	if len(os.Args) <= 1 {
 		printHelp()
-		os.Exit(0)
+	}
+
+	if 3 <= len(os.Args) && os.Args[1] != "-g" {
+		printHelp()
+	}
+
+	if 4 <= len(os.Args) {
+		printHelp()
+	}
+
+	var filename string
+	if len(os.Args) == 2 {
+		// from markdown
+		filename = os.Args[1]
+	} else if len(os.Args) == 3 {
+		// from gist
+		filename = saveGist()
+	} else {
+		printHelp()
 	}
 
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	check(err)
-
-	filename := os.Args[1]
 
 	mds := splitMarkdownFiles(filename)
 	htmls := genHTML(mds)
@@ -78,6 +98,26 @@ func main() {
 	clean()
 }
 
+func saveGist() string {
+	filename := "gist.md"
+	u, _ := url.Parse(os.Args[2])
+	rawURL := *u
+	rawURL.Path = path.Join(rawURL.Path, "raw")
+
+	client := &http.Client{}
+	resp, err := client.Get(rawURL.String())
+	check(err)
+	defer resp.Body.Close()
+
+	content, _ := ioutil.ReadAll(resp.Body)
+	file, err := os.Create(filename)
+	check(err)
+	defer file.Close()
+
+	file.Write(content)
+	return filename
+}
+
 func applyGFM(html string) {
 	data, _ := ioutil.ReadFile(html)
 	gfmmd := fmt.Sprintf("%s\n%s\n%s", cssStartTag, data, cssEndTag)
@@ -90,6 +130,10 @@ func clean() {
 	check(err)
 	for _, f := range files {
 		check(os.Remove(f))
+	}
+	_, err = os.Stat("gist.md")
+	if !os.IsNotExist(err) {
+		check(os.Remove("gist.md"))
 	}
 }
 
