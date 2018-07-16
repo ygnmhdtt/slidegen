@@ -1,5 +1,7 @@
 # slidegen - generate presentation slide from markdown file
 
+![](https://github.com/ygnmhdtt/slidegen/blob/master/samples/demo.gif)
+
 ## About
 
 slidegen is the CLI tool to generate presentation slide from markdown file.  
