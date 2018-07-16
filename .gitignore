@@ -1,4 +1,4 @@
 page*.md
-*.pdf
+output.pdf
 *.html
 vendor
