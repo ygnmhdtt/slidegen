@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
+	"github.com/ygnmhdtt/go-wkhtmltopdf"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 

@@ -2,20 +2,20 @@
 
 
 [[projects]]
-  digest = "1:156d27ae1901d3409876ed830bf17f8095050991bf9082e0cac8e12524ee6c9b"
-  name = "github.com/SebastiaanKlippert/go-wkhtmltopdf"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "1108d980d378169b480aa43eda2094e2b9ebff7f"
-  version = "v1.2.1"
-
-[[projects]]
   branch = "master"
   digest = "1:def689e73e9252f6f7fe66834a76751a41b767e03daab299e607e7226c58a855"
   name = "github.com/shurcooL/sanitized_anchor_name"
   packages = ["."]
   pruneopts = "UT"
   revision = "86672fcb3f950f35f2e675df2240550f2a50762f"
+
+[[projects]]
+  digest = "1:156d27ae1901d3409876ed830bf17f8095050991bf9082e0cac8e12524ee6c9b"
+  name = "github.com/ygnmhdtt/go-wkhtmltopdf"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "1108d980d378169b480aa43eda2094e2b9ebff7f"
+  version = "v1.2.1"
 
 [[projects]]
   digest = "1:39c2113f3a89585666e6f973650cff186b2d06deb4aa202c88addb87b0a201db"
@@ -29,7 +29,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/SebastiaanKlippert/go-wkhtmltopdf",
+    "github.com/ygnmhdtt/go-wkhtmltopdf",
     "gopkg.in/russross/blackfriday.v2",
   ]
   solver-name = "gps-cdcl"
