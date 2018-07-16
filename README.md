@@ -10,10 +10,6 @@ Markdown style is always GFM([GitHub Flavored Markdown](https://github.github.co
 * Golang
 * [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html)
 
-### Running in docker container
-
-If you use docker, running slidegen in container is the easiest way.
-
 ### Markdown file format and generated pdf
 
 I prepared [sample markdown and pdf](https://github.com/ygnmhdtt/slidegen/tree/master/samples) for example.
@@ -21,7 +17,7 @@ Markdown file must be contain `---` for delimiter of pdf pages. ([like this](htt
 
 ## Installation and Usage
 
-* Both ways, the name of generated pdf is `output.pdf`
+* MacOSX is supported.
 
 ### Mac OSX
 
@@ -39,29 +35,7 @@ $ go get github.com/ygnmhdtt/slidegen
 $ slidegen your/markdown/file.md
 ```
 
-### Linux
-
-If you use Linux, use docker for installation.
-
-```sh
-$ go get github.com/ygnmhdtt/slidegen
-$ cd $GOPATH/src/github.com/ygnmhdtt/slidegen
-$ make build
-```
-
-#### Usage
-
-```
-$ make gen F=your/markdown/file.md
-```
-
 ## Development
-
-```
-$ go get github.com/ygnmhdtt/slidegen
-$ cd $GOPATH/src/github.com/ygnmhdtt/slidegen
-$ dep ensure # or create docker container
-```
 
 Pull Requests are always welcome!
 
