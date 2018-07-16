@@ -56,7 +56,6 @@ func main() {
 		pdfg.PageSize.Set(wkhtmltopdf.PageSizeB6)
 		pdfg.Dpi.Set(300)
 		page := wkhtmltopdf.NewPage(html)
-		page.CustomHeader.Set("--encoding", "utf8")
 
 		pdfg.AddPage(page)
 	}
