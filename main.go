@@ -44,11 +44,25 @@ func check(err interface{}) {
 	}
 }
 
+func printHelp() {
+	help := `Usage
+slidegen your/markdown/file.md`
+	fmt.Println(help)
+}
+
 func main() {
+
+	if len(os.Args) <= 1 {
+		printHelp()
+		os.Exit(0)
+	}
+
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	check(err)
 
-	mds := splitMarkdownFiles(os.Args[1])
+	filename := os.Args[1]
+
+	mds := splitMarkdownFiles(filename)
 	htmls := genHTML(mds)
 	for _, html := range htmls {
 		applyGFM(html)
