@@ -16,7 +16,8 @@ If you use docker, running slidegen in container is the easiest way.
 
 ### Markdown file format and generated pdf
 
-I prepared [sample markdown]() and [generated pdf]() for example.
+I prepared [sample markdown and pdf](https://github.com/ygnmhdtt/slidegen/tree/master/samples) for example.
+Markdown file must be contain `---` for delimiter of pdf pages. ([like this](https://raw.githubusercontent.com/ygnmhdtt/slidegen/master/samples/awscli-on-container.md))
 
 ## Installation and Usage
 
@@ -53,6 +54,16 @@ $ make build
 ```
 $ make gen F=your/markdown/file.md
 ```
+
+## Development
+
+```
+$ go get github.com/ygnmhdtt/slidegen
+$ cd $GOPATH/src/github.com/ygnmhdtt/slidegen
+$ dep ensure # or create docker container
+```
+
+Pull Requests are always welcome!
 
 ## LISENCE
 
